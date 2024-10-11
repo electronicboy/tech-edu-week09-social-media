@@ -1,10 +1,9 @@
 'use client'
-import {Box, Container, FormGroup, FormHelperText, Input, InputLabel} from "@mui/material";
+import {Box, FormGroup, FormHelperText, Input, InputLabel} from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import React, {useState} from "react";
-import Post from "@/components/Post";
 
-export default function PostForm({onPost}: {onPost: (post: FormData) => Promise<void>}) {
+export default function PostForm({onPost}: {onPost: (post: FormData) => Promise<{ success: boolean, message?: string }>}) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string|null>();
 

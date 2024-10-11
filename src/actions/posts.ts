@@ -4,7 +4,7 @@ import {auth} from "@clerk/nextjs/server";
 import {db} from "@/util/db";
 import {revalidatePath} from "next/cache";
 
-export async function handlePost(formData: FormData) {
+export async function handlePost(formData: FormData): Promise<{success: boolean, message?: string}> {
     'use server'
     const {userId} = auth()
     const post = formData.get('post');
@@ -24,4 +24,6 @@ export async function handlePost(formData: FormData) {
         revalidatePath('/')
         return {success: true}
     }
+
+    return {success: false, message: "unknown state"}
 }

@@ -1,28 +1,21 @@
-import {Box, Container, Paper} from "@mui/material";
+import {Box, Paper} from "@mui/material";
 import PostForm from "@/components/forms/PostForm";
-import {db} from "@/util/db";
 import {handlePost} from "@/actions/posts";
-import Post from "@/components/Post";
 import React from "react";
+import PostsContainer from "@/components/layout/PostsContainer";
 
 export default function Home() {
 
 
-    //db().query("")
-
-    const fauxPosts = [{username: "shane", post: "hai", time: Date()}, {username: "shane", post: "hai", time: Date()}, {username: "shane", post: "hai", time: Date()}, {username: "shane", post: "hai", time: Date()}]
 
     return (
         <>
-            <Paper className={"max-w-xl mx-auto"}>
+            <Paper className={"max-w-xl mx-auto"} variant={"outlined"} >
                 <PostForm onPost={handlePost}></PostForm>
             </Paper>
-            <Box>
-                <Container>
-                    {fauxPosts.map((post, i) => (
-                        <Post key={i} {...post}/>
-                    ))}
-                </Container>
+            <Box className={"mt-8"}>
+                {"aaaa"}
+                <PostsContainer/>
             </Box>
         </>
     );

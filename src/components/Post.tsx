@@ -1,4 +1,4 @@
-import {Card, CardActions, CardContent, CardHeader, Typography} from "@mui/material";
+import {Card, CardActions, CardContent, Typography} from "@mui/material";
 
 export default function Post({username, post, time}: {username: string, post: string, time: Date}) {
 
