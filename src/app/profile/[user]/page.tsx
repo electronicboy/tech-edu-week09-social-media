@@ -2,14 +2,14 @@ import {ProfileData} from "@/types/ProfileData";
 import {db} from "@/util/db";
 import {notFound} from "next/navigation";
 import UserProfileInfo from "@/components/forms/UserProfileInfo";
-import {auth, clerkClient} from "@clerk/nextjs/server";
+import {auth} from "@clerk/nextjs/server";
 import ProfilePostsContainer from "@/components/layout/ProfilePostsContainer";
 
 export default async function ProfilePage({params}: { params: { user: string } }) {
 
     const {userId} = auth();
 
-    async function noopHandler(data: FormData) {
+    async function noopHandler() {
         'use server'
         return {success: false}
     }

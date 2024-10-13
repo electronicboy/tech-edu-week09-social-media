@@ -8,7 +8,7 @@ import '@fontsource/roboto/700.css';
 import Header from "@/components/layout/Header";
 import {ClerkProvider} from "@clerk/nextjs";
 
-import {ThemeProvider, createTheme} from '@mui/material/styles';
+import {ThemeProvider} from '@mui/material/styles';
 
 const geistSans = localFont({
     src: "./fonts/GeistVF.woff",

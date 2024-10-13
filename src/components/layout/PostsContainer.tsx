@@ -1,6 +1,5 @@
 'use client'
 import {Box, Paper, Tab, Tabs} from "@mui/material";
-import {PostEntry} from "@/types/PostEntry";
 import React, {Suspense} from "react";
 import {FaSpinner} from "react-icons/fa6";
 import Posts from "@/components/layout/Posts";

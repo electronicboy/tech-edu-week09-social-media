@@ -2,7 +2,6 @@
 import {PostEntry} from "@/types/PostEntry";
 import {PostType} from "@/types/PostType";
 import useSWR from "swr";
-import {FaSpinner} from "react-icons/fa6";
 import React from "react";
 import Post from "@/components/Post";
 import PostSkeleton from "@/components/PostSkeleton";
