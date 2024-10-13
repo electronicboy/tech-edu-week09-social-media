@@ -54,7 +54,7 @@ export default function UserProfileInfo({onUpdate, profileData, readOnly}: {
     // TODO: remove form for read only state, heck, use a different component
 
     return (
-        <Box component='form' className={"mx-auto mx-w-2xl p-4 border shadow flex flex-col"} onSubmit={handleSubmit}>
+        <Box component='form' className={"mx-auto mx-w-2xl p-4 border shadow flex flex-col gap-4"} onSubmit={handleSubmit}>
             <FormControl>
                 <InputLabel htmlFor={"username"}>Username</InputLabel>
                 <Input id={"username"} name={"username"} type={"text"} defaultValue={profileData?.username}

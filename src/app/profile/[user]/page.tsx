@@ -5,15 +5,11 @@ import UserProfileInfo from "@/components/forms/UserProfileInfo";
 import {auth} from "@clerk/nextjs/server";
 import ProfilePostsContainer from "@/components/layout/ProfilePostsContainer";
 import {Box} from "@mui/material";
+import UserProfileInfoView from "@/components/UserProfileInfoView";
 
 export default async function ProfilePage({params}: { params: { user: string } }) {
 
     const {userId} = auth();
-
-    async function noopHandler() {
-        'use server'
-        return {success: false}
-    }
 
     async function processUpdate(data: FormData) {
         'use server'
@@ -71,14 +67,16 @@ export default async function ProfilePage({params}: { params: { user: string } }
     if (profileData.clerk_id === userId) {
         return (
             <>
-                <UserProfileInfo onUpdate={processUpdate} profileData={profileData}/>)
-                <ProfilePostsContainer profile={userNum}/>
+                <UserProfileInfo onUpdate={processUpdate} profileData={profileData}/>
+                <Box className={"mt-8"}>
+                    <ProfilePostsContainer profile={userNum}/>
+                </Box>
             </>
         )
 
     } else {
         return (<>
-            <UserProfileInfo onUpdate={noopHandler} profileData={profileData} readOnly={true}/>
+            <UserProfileInfoView profileData={profileData}/>
             <Box className={"mt-8"}>
                 <ProfilePostsContainer profile={userNum}/>
             </Box>
