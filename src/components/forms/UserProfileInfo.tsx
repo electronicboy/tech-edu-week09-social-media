@@ -40,7 +40,7 @@ export default function UserProfileInfo({onUpdate}: {
             setLoading(false)
         }
 
-        console.log(newTarget || '/')
+        console.log("upa", newTarget || '/')
 
         router.push(newTarget || '/')
     }

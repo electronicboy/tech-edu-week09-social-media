@@ -1,35 +1,28 @@
-import { db } from "@/util/db";
+import {db} from "@/util/db";
 import {NextRequest, NextResponse} from "next/server";
 import {PostEntry} from "@/types/PostEntry";
 import {currentUser} from "@clerk/nextjs/server";
+import {PostType} from "@/types/PostType";
+import {getPosts} from "@/repo/posts";
 
 
-
-export default async function GET(request: NextRequest): Promise<NextResponse<{success: boolean, message?: string}>> {
-    const type = request.nextUrl.searchParams.get('type')
-    const since = request.nextUrl.searchParams.get('since')
-    const limit = request.nextUrl.searchParams.get('limit')
-    let limitToFollowers = false;
-    let since: number = -1;
+export async function GET(request: NextRequest) {
+    console.log("get")
+    const queryType = request.nextUrl.searchParams.get('type')
+    const queryPage = request.nextUrl.searchParams.get('page')
+    const queryLimit = request.nextUrl.searchParams.get('limit')
+    let page: number = -1;
     let limit: number = -1;
-    if (type === "followers") {
-        limitToFollowers = true;
+
+    const type: PostType = queryType === "1" ? PostType.FOLLOWING : PostType.DEFAULT;
+
+    try {
+        const posts = await getPosts(type)
+        return new NextResponse(JSON.stringify({success: true, posts: posts}))
+    } catch (error) {
+        console.log(error)
+        return new NextResponse(JSON.stringify({success: false, message: "an internal error occured"}))
+
     }
-
-    let posts
-
-    if (!limitToFollowers) {
-        posts = db().query<PostEntry>( /* language=PostgreSQL */
-            `SELECT post.id, profile.id as profile_id, profile.username, post.content, post.created_at, profile.clerk_id FROM socialmedia_posts post INNER JOIN socialmedia_profile profile ON post.profile_id = profile.id WHERE created_at < $1`)
-    } else {
-        const user = await currentUser()
-        if (user === null) {
-            return new NextResponse({success: false, message: "You are not logged in"}, )
-        }
-
-        posts = db().query()
-    }
-
-    return new NextResponse({success: posts.rowCount > 0})
 
 }

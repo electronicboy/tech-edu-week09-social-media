@@ -3,10 +3,13 @@ import PostForm from "@/components/forms/PostForm";
 import {handlePost} from "@/actions/posts";
 import React from "react";
 import PostsContainer from "@/components/layout/PostsContainer";
+import {getPosts} from "@/repo/posts";
+import {auth} from "@clerk/nextjs/server";
+import {PostType} from "@/types/PostType";
 
-export default function Home() {
+export default async function Home() {
 
-
+    const {userId} = auth();
 
     return (
         <>
@@ -14,7 +17,6 @@ export default function Home() {
                 <PostForm onPost={handlePost}></PostForm>
             </Paper>
             <Box className={"mt-8"}>
-                {"aaaa"}
                 <PostsContainer/>
             </Box>
         </>
