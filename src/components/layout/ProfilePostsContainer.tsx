@@ -1,7 +1,6 @@
 'use client'
 import {Box, Paper} from "@mui/material";
-import React, {Suspense} from "react";
-import {FaSpinner} from "react-icons/fa6";
+import React from "react";
 import Posts from "@/components/layout/Posts";
 import {PostType} from "@/types/PostType";
 
