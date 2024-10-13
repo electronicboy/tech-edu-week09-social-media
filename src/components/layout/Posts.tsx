@@ -64,7 +64,6 @@ export default function Posts({type, profile}: { type: PostType, profile?: numbe
         return <FailContainer>{"Unexpected client state."}</FailContainer>
     }
 
-    console.log("posts", posts, "data", data);
     return (
         <>
             <div className={"*:border-b *:border-b-gray-500 last:border-none"}>

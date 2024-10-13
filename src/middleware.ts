@@ -7,7 +7,6 @@ const signinRoutes = createRouteMatcher(['/sign-in', '/sign-up', '/onboarding'])
 
 export default clerkMiddleware((auth, req) => {
     const {userId, sessionClaims, redirectToSignIn} = auth();
-    console.log("middleware", userId)
 
     if (!userId) {
         if (isPublicRoute(req)) {

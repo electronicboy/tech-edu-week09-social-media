@@ -42,7 +42,6 @@ export default async function ProfilePage({params}: { params: { user: string } }
         return {success: false, error: "Unexpected state"}
     }
 
-    console.log(params.user)
     const userStr = params.user;
     const userNum = Number(params.user);
 
