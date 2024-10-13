@@ -2,7 +2,7 @@ import {clerkMiddleware, createRouteMatcher} from "@clerk/nextjs/server";
 import {NextResponse} from "next/server";
 
 // https://clerk.com/blog/add-onboarding-flow-for-your-application-with-clerk
-const isPublicRoute = createRouteMatcher(['/', '/onboarding', '/sign-in', '/sign-up', '/api/posts'])
+const isPublicRoute = createRouteMatcher(['/', '/onboarding', '/sign-in', '/sign-up', '/api/posts', '/api/user/public/(.*)'])
 const signinRoutes = createRouteMatcher(['/sign-in', '/sign-up', '/onboarding'])
 
 export default clerkMiddleware((auth, req) => {

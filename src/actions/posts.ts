@@ -9,6 +9,10 @@ export async function handlePost(formData: FormData): Promise<{success: boolean,
     const {userId} = auth()
     const post = formData.get('post');
 
+    if (!userId) {
+        return {success: false, message: "You need to login first!"};
+    }
+
     if (!post) {
         return {success: false, message: "Missing post"};
     }

@@ -1,5 +1,5 @@
 import React from 'react'
-import {Box, Button, Container, FormControl, Input, InputLabel} from "@mui/material";
+import {Container} from "@mui/material";
 import UserProfileInfo from "../../components/forms/UserProfileInfo";
 import {db} from "@/util/db";
 import {auth, clerkClient} from "@clerk/nextjs/server";
@@ -44,9 +44,6 @@ export default function OnboardingPage({searchParams}: { searchParams: { redirec
         }
 
         return {success: false, error: "Unexpected state"}
-
-
-
     }
 
 

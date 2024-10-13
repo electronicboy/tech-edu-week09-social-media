@@ -3,51 +3,89 @@ import {PostEntry} from "@/types/PostEntry";
 import {PostType} from "@/types/PostType";
 import useSWR from "swr";
 import {FaSpinner} from "react-icons/fa6";
-import {Card, Paper} from "@mui/material";
+import React from "react";
+import Post from "@/components/Post";
+import PostSkeleton from "@/components/PostSkeleton";
 
-const fetcher = (...args: string[]) => fetch(args.join('')).then(res => res.json())
+const fetcher = (...args: string[]) => fetch(args.join("")).then(res => res.json())
 
-export default function Posts({type}: { type: PostType }) {
+export default function Posts({type, profile}: { type: PostType, profile?: number }) {
     // SWR supports suspense, but, not for SSR...
-    const {data, error, isLoading} = useSWR<{success: boolean, message?: string, posts: PostEntry[]}>([`/api/posts?type=${type}`], fetcher)
+    const profileSWRKey = profile ? `&profile=${profile}` : '';
+    const {data, error, isLoading} = useSWR<{
+        success: boolean,
+        message?: string,
+        posts: PostEntry[]
+    }>([`/api/posts?type=${type}${profileSWRKey}`], fetcher)
 
+
+    // if loading, show spinner, fail container is probably not aptly named
     if (isLoading) {
-        return <div><FaSpinner/></div>
-    }
-    if (error || data?.success === false || (!isLoading && data === undefined)) {
-        if (error) {
-            return <div>{JSON.stringify(error)}</div>;
-        } else if (data?.message) {
-            return <div>{data!.message}</div>
-        } else {
-            return <div>{"An unexpected error occured!"}</div>
+        return (
+            <>
+                <div className={"*:border-b *:border-b-gray-500 last:border-none"}>
+                    <PostSkeleton/>
+                    <PostSkeleton/>
+                </div>
+            </>
+        )
+    } else {
+        // validate more explict failure states here
+        if (error || data?.success === false || (!isLoading && data === undefined)) {
+            if (error) {
+                return <FailContainer>{JSON.stringify(error)}</FailContainer>;
+            } else if (data?.message) {
+                return <FailContainer>{data!.message}</FailContainer>
+            } else {
+                return <FailContainer>{"An unexpected error occurred!"}</FailContainer>
+            }
         }
     }
 
-    const posts = data!.posts;
-
-
-    console.log("posts", posts);
-    if (posts.length === 0) {
-        return (<div>
-            {"Looks like there is nothing here yet, why don't you change that?"}
-        </div>)
+    // At this point, we should have data, so this is an unexpected state...
+    const posts = data?.posts;
+    if (!data) {
+        console.log(data, error, isLoading)
+        return <FailContainer>{JSON.stringify({data: data, error: error, isLoading: isLoading})}</FailContainer>
     }
+
+    // This is not ideal, but, outside of extracting out the fetch response into an object of its own, this is the easiest
+    if (data.success && data.posts == null) {
+        return <FailContainer>Looks like there is nothing here for you, are you logged in?</FailContainer>
+    }
+
+
+    if (posts && posts.length === 0) {
+        return <FailContainer>{"Looks like there is nothing here yet, why don't you change that?"}</FailContainer>
+    }
+
+    // "This should not happen" - also, appeases the access below
+    if (posts == undefined) {
+        console.log("unexpected data state", data)
+        return <FailContainer>{"Unexpected client state."}</FailContainer>
+    }
+
+    console.log("posts", posts, "data", data);
     return (
         <>
             <div>
                 {JSON.stringify(posts)}
             </div>
-            <div>
-                {posts.map((post, i) => (
-                    <div key={i} className={"*:border-b *:last:border-none"}>
-
-                        <div key={i}>{post.content}</div>
-                    </div>
+            <div className={"*:border-b *:border-b-gray-500 last:border-none"}>
+                {posts.map((post) => (
+                    <Post post={post} key={post.id}/>
 
                 ))}
             </div>
         </>
 
+    )
+}
+
+export function FailContainer({children}: { children: React.ReactNode }) {
+    return (
+        <div className={"text-center py-4 text-xl"}>
+            {children}
+        </div>
     )
 }

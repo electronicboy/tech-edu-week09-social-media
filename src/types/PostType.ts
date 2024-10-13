@@ -1,5 +1,6 @@
 export enum PostType {
     DEFAULT,
-    FOLLOWING
+    FOLLOWING,
+    USER,
 
 }
