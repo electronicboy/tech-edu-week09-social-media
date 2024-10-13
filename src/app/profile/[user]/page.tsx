@@ -49,7 +49,7 @@ export default async function ProfilePage({params}: { params: { user: string } }
     const userStr = params.user;
     const userNum = Number(params.user);
 
-    let profileData: ProfileData = null;
+    let profileData: ProfileData|null = null;
 
     if (userNum) {
         const queryRes = await db().query<ProfileData>("SELECT * FROM socialmedia_profile WHERE id = $1", [Number(params.user)])
