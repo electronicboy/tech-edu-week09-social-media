@@ -4,6 +4,7 @@ import {notFound} from "next/navigation";
 import UserProfileInfo from "@/components/forms/UserProfileInfo";
 import {auth} from "@clerk/nextjs/server";
 import ProfilePostsContainer from "@/components/layout/ProfilePostsContainer";
+import {Box} from "@mui/material";
 
 export default async function ProfilePage({params}: { params: { user: string } }) {
 
@@ -49,7 +50,7 @@ export default async function ProfilePage({params}: { params: { user: string } }
     const userStr = params.user;
     const userNum = Number(params.user);
 
-    let profileData: ProfileData|null = null;
+    let profileData: ProfileData | null = null;
 
     if (userNum) {
         const queryRes = await db().query<ProfileData>("SELECT * FROM socialmedia_profile WHERE id = $1", [Number(params.user)])
@@ -68,11 +69,19 @@ export default async function ProfilePage({params}: { params: { user: string } }
     }
 
     if (profileData.clerk_id === userId) {
-        return (<UserProfileInfo onUpdate={processUpdate} profileData={profileData}/>)
+        return (
+            <>
+                <UserProfileInfo onUpdate={processUpdate} profileData={profileData}/>)
+                <ProfilePostsContainer profile={userNum}/>
+            </>
+        )
+
     } else {
         return (<>
             <UserProfileInfo onUpdate={noopHandler} profileData={profileData} readOnly={true}/>
-            <ProfilePostsContainer profile={userNum}/>
+            <Box className={"mt-8"}>
+                <ProfilePostsContainer profile={userNum}/>
+            </Box>
         </>)
 
     }

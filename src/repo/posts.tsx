@@ -36,16 +36,15 @@ export async function getPosts(type: PostType, profile?: number|null, since?: nu
             posts = queryRes.rows;
         } else if (user != null && type == PostType.USER) {
             const queryRes = await db().query<PostEntry>( /* language=PostgreSQL */
-                `SELECT posts.id   as id,
+                `SELECT post.id,
                         profile.id as profile_id,
-                        username,
-                        content,
-                        created_at,
-                        clerk_id
-                 FROM socialmedia_follows
-                          INNER JOIN socialmedia_posts posts ON followee = posts.profile_id
-                          INNER JOIN socialmedia_profile profile ON posts.profile_id = profile.id
-                 WHERE socialmedia_follows.follower = (SELECT id FROM socialmedia_profile WHERE id = $1)`,
+                        profile.username,
+                        post.content,
+                        post.created_at,
+                        profile.clerk_id
+                 FROM socialmedia_posts post
+                          INNER JOIN socialmedia_profile profile ON post.profile_id = profile.id
+                 WHERE profile.id = $1`,
                 [profile]
             )
             posts = queryRes.rows;

@@ -3,6 +3,7 @@ import {PostType} from "@/types/PostType";
 import {getPosts} from "@/repo/posts";
 
 
+// eslint disable lines exist for handling
 export async function GET(request: NextRequest) {
     console.log("get")
     const queryType = request.nextUrl.searchParams.get('type')
