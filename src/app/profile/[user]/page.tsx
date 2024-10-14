@@ -103,7 +103,7 @@ export async function generateMetadata({params}: { params: { user: string } }) {
         notFound()
     }
 
-    const username = profileData.username
+    const username = profileData!.username
     // const bio = profileData.bio
     // let bioShort = profileData.bio.slice(0, 32)
     // if (bio.length != bioShort.length) {
