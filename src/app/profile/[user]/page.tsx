@@ -85,3 +85,35 @@ export default async function ProfilePage({params}: { params: { user: string } }
 
 
 }
+
+export async function generateMetadata({params}: { params: { user: string } }) {
+    const userID = Number(params.user);
+    if (isNaN(userID)) {
+        notFound();
+    }
+
+    let profileData: ProfileData | null = null;
+
+    const queryRes = await db().query<ProfileData>("SELECT * FROM socialmedia_profile WHERE id = $1", [Number(params.user)])
+    if (queryRes.rowCount === 1) {
+        profileData = queryRes.rows[0];
+    }
+
+    if (profileData == null) {
+        notFound()
+    }
+
+    const username = profileData.username
+    // const bio = profileData.bio
+    // let bioShort = profileData.bio.slice(0, 32)
+    // if (bio.length != bioShort.length) {
+    //     bioShort = `${bioShort}...`;
+    // }
+
+    return {
+        title: `${username} - Socialing media`,
+        description: `Learn more about ${username} - join us now!`
+    }
+
+
+}
